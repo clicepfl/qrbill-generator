@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
 
-record JSONBill(@JsonProperty("account") String account, @JsonProperty("amount") double amount,
+public record JSONBill(@JsonProperty("account") String account, @JsonProperty("amount") double amount,
                 @JsonProperty("currency") String currency, @JsonProperty("creditor") JSONAddress creditor,
                 @JsonProperty("message") String message) {
     public Bill toBill() {
