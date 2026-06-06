@@ -13,7 +13,7 @@ COPY . .
 RUN gradle clean build
     
 # actual container
-FROM openjdk:17-alpine
+FROM eclipse-temurin:17
 ENV ARTIFACT_NAME=app.jar
 ENV APP_HOME=/usr/app/
     
