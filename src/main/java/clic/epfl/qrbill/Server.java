@@ -14,7 +14,7 @@ public class Server {
         try {
             if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                 // Return 405 Method Not Allowed for non-POST requests
-                exchange.sendResponseHeaders(NOT_ALLOWED.code(), -1);
+                exchange.sendResponseHeaders(NOT_ALLOWED.code, -1);
                 return;
             }
             JSONBill bill = new ObjectMapper().readValue(exchange.getRequestBody(), JSONBill.class);
@@ -23,16 +23,16 @@ public class Server {
                 try {
                     var qr = Main.generateQR(bill);
                     exchange.getResponseHeaders().add("Content-Type", "image/svg+xml");
-                    exchange.sendResponseHeaders(OK.code(), qr.length);
+                    exchange.sendResponseHeaders(OK.code, qr.length);
                     outputStream.write(qr);
                 } catch (QRBillValidationError e) {
-                    exchange.sendResponseHeaders(BAD_REQUEST.code(), e.getMessage().length());
+                    exchange.sendResponseHeaders(BAD_REQUEST.code, e.getMessage().length());
                     outputStream.write(e.getMessage().getBytes());
                     exchange.close();
                 }
             } catch (Exception e) {
                 System.err.println(e.getMessage());
-                exchange.sendResponseHeaders(SERVER_ERROR.code(), 0);
+                exchange.sendResponseHeaders(SERVER_ERROR.code, 0);
                 exchange.close();
             }
 
@@ -47,14 +47,10 @@ public class Server {
         NOT_ALLOWED(405),
         SERVER_ERROR(500);
 
-        private final int code;
+        public final int code;
 
         HTTPResponses(int code) {
             this.code = code;
-        }
-
-        int code() {
-            return this.code;
         }
     }
 }
